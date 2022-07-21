@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-service
+  labels:
+    name: rabbitmq-service
+  namespace: ikomida
+spec:
+  type: NodePort
+  ports:
+  - name: amqp
+    port: 5672
+    targetPort: 5672
+  - name: prometheus
+    port: 15692
+    targetPort: 15692
+  selector:
+    app: rabbitmq-microservice
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-lb
+  labels:
+    name: rabbitmq-lb 
+  namespace: ikomida
+spec:
+  type: LoadBalancer
+  ports:
+  - name: management
+    port: 15672
+    targetPort: 15672
+  selector:
+    app: rabbitmq-microservice

@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ikomida-rabbitmq-4369
+  labels:
+    name: ikomida-rabbitmq-4369
+  namespace: ikomida
+spec:
+  type: Service
+  ports:
+    - port: 4369
+  selector:
+    name: ikomida-rabbitmq
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ikomida-rabbitmq-5671
+  labels:
+    name: ikomida-rabbitmq-5671
+  namespace: ikomida
+spec:
+  type: Service
+  ports:
+    - port: 5671
+  selector:
+    name: ikomida-rabbitmq
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ikomida-rabbitmq-5672 
+  labels:
+    name: ikomida-rabbitmq-5672 
+  namespace: ikomida
+spec:
+  type: Service
+  ports:
+    - port: 5672 
+  selector:
+    name: ikomida-rabbitmq
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ikomida-rabbitmq-25672 
+  labels:
+    name: ikomida-rabbitmq-25672 
+  namespace: ikomida
+spec:
+  type: Service
+  ports:
+    - port: 25672 
+  selector:
+    name: ikomida-rabbitmq
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ikomida-rabbitmq-15671 
+  labels:
+    name: ikomida-rabbitmq-15671 
+  namespace: ikomida
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 15671 
+  selector:
+    name: ikomida-rabbitmq
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ikomida-rabbitmq-15672 
+  labels:
+    name: ikomida-rabbitmq-15672 
+  namespace: ikomida
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 15672 
+  selector:
+    name: ikomida-rabbitmq

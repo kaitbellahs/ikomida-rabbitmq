@@ -1,0 +1,40 @@
+steps:
+  - id: dockerBuild
+    name: "gcr.io/cloud-builders/docker"
+    entrypoint: "bash"
+    args:
+      [
+        "-c",
+        'docker build -t us-central1-docker.pkg.dev/ikomida-prod/ikomida/rabbitmq-image:$TAG_NAME -t us-central1-docker.pkg.dev/ikomida-prod/ikomida/rabbitmq-image:latest .',
+      ]
+
+  - id: k8sApply
+    name: "gcr.io/cloud-builders/kubectl"
+    args: ["apply", "-f", "k8s/"]
+    env:
+      - "CLOUDSDK_COMPUTE_ZONE=us-central1-b"
+      - "CLOUDSDK_CONTAINER_CLUSTER=ikomida-prod-cluster"
+    waitFor:
+      - dockerBuild
+
+  - id: k8sSetImage
+    name: "gcr.io/cloud-builders/kubectl"
+    args:
+      [
+        "set",
+        "image",
+        "pod",
+        "ikomida-rabbitmq",
+        "ikomida-rabbitmq=us-central1-docker.pkg.dev/ikomida-prod/ikomida/rabbitmq-image:$TAG_NAME",
+      ]
+    env:
+      - "CLOUDSDK_COMPUTE_ZONE=us-central1-b"
+      - "CLOUDSDK_CONTAINER_CLUSTER=ikomida-prod-cluster"
+    waitFor:
+      - k8sApply
+
+images:
+  [
+    "us-central1-docker.pkg.dev/ikomida-prod/ikomida/rabbitmq-image:$TAG_NAME",
+    "us-central1-docker.pkg.dev/ikomida-prod/ikomida/rabbitmq-image:latest",
+  ]
