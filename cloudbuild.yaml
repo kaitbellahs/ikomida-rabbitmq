@@ -5,7 +5,7 @@ steps:
     args:
       [
         "-c",
-        'docker build -t us-central1-docker.pkg.dev/ikomida-prod/ikomida/rabbitmq-image:$TAG_NAME -t us-central1-docker.pkg.dev/ikomida-prod/ikomida/rabbitmq-image:latest .',
+        'docker build -t us-central1-docker.pkg.dev/ikomida-prod/docker/rabbitmq-image:$TAG_NAME -t us-central1-docker.pkg.dev/ikomida-prod/docker/rabbitmq-image:latest .',
       ]
 
   - id: k8sApply
@@ -25,7 +25,7 @@ steps:
         "image",
         "pod",
         "ikomida-rabbitmq",
-        "ikomida-rabbitmq=us-central1-docker.pkg.dev/ikomida-prod/ikomida/rabbitmq-image:$TAG_NAME",
+        "ikomida-rabbitmq=us-central1-docker.pkg.dev/ikomida-prod/docker/rabbitmq-image:$TAG_NAME",
       ]
     env:
       - "CLOUDSDK_COMPUTE_ZONE=us-central1-b"
@@ -35,6 +35,6 @@ steps:
 
 images:
   [
-    "us-central1-docker.pkg.dev/ikomida-prod/ikomida/rabbitmq-image:$TAG_NAME",
-    "us-central1-docker.pkg.dev/ikomida-prod/ikomida/rabbitmq-image:latest",
+    "us-central1-docker.pkg.dev/ikomida-prod/docker/rabbitmq-image:$TAG_NAME",
+    "us-central1-docker.pkg.dev/ikomida-prod/docker/rabbitmq-image:latest",
   ]

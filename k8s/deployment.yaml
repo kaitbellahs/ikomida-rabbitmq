@@ -16,7 +16,7 @@ spec:
         app: rabbitmq-microservice
     spec:
       containers:
-        - image: us-central1-docker.pkg.dev/ikomida-prod/ikomida/rabbitmq-image:latest
+        - image: us-central1-docker.pkg.dev/ikomida-prod/docker/rabbitmq-image:latest
           name: rabbitmq
           env:
             - name: RABBITMQ_DEFAULT_VHOST
