@@ -1,83 +1,34 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ikomida-rabbitmq-4369
+  name: rabbitmq-service
   labels:
-    name: ikomida-rabbitmq-4369
+    name: rabbitmq-service
   namespace: ikomida
 spec:
-  type: Service
+  type: NodePort
   ports:
-    - port: 4369
+  - name: amqp
+    port: 5672
+    targetPort: 5672
+  - name: prometheus
+    port: 15692
+    targetPort: 15692
   selector:
-    name: ikomida-rabbitmq
+    app: rabbitmq-microservice
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: ikomida-rabbitmq-5671
+  name: rabbitmq-lb
   labels:
-    name: ikomida-rabbitmq-5671
-  namespace: ikomida
-spec:
-  type: Service
-  ports:
-    - port: 5671
-  selector:
-    name: ikomida-rabbitmq
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: ikomida-rabbitmq-5672 
-  labels:
-    name: ikomida-rabbitmq-5672 
-  namespace: ikomida
-spec:
-  type: Service
-  ports:
-    - port: 5672 
-  selector:
-    name: ikomida-rabbitmq
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: ikomida-rabbitmq-25672 
-  labels:
-    name: ikomida-rabbitmq-25672 
-  namespace: ikomida
-spec:
-  type: Service
-  ports:
-    - port: 25672 
-  selector:
-    name: ikomida-rabbitmq
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: ikomida-rabbitmq-15671 
-  labels:
-    name: ikomida-rabbitmq-15671 
+    name: rabbitmq-lb 
   namespace: ikomida
 spec:
   type: LoadBalancer
   ports:
-    - port: 15671 
+  - name: management
+    port: 15672
+    targetPort: 15672
   selector:
-    name: ikomida-rabbitmq
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: ikomida-rabbitmq-15672 
-  labels:
-    name: ikomida-rabbitmq-15672 
-  namespace: ikomida
-spec:
-  type: LoadBalancer
-  ports:
-    - port: 15672 
-  selector:
-    name: ikomida-rabbitmq
+    app: rabbitmq-microservice
