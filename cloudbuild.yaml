@@ -1,11 +1,11 @@
 steps:
-  - id: dockerBuild
-    name: "gcr.io/cloud-builders/docker"
+  - id: kanikoBuild
+    name: "us-central1-docker.pkg.dev/$PROJECT_ID/docker/kaniko:latest"
     entrypoint: "bash"
     args:
       [
         "-c",
-        'docker build -t us-central1-docker.pkg.dev/ikomida-prod/docker/rabbitmq-image:$TAG_NAME -t us-central1-docker.pkg.dev/ikomida-prod/docker/rabbitmq-image:latest .',
+        "/kaniko/executor --destination=us-central1-docker.pkg.dev/$PROJECT_ID/docker/rabbitmq-image:$TAG_NAME --destination=us-central1-docker.pkg.dev/$PROJECT_ID/docker/rabbitmq-image:latest --cache=true --cache-ttl=365h",
       ]
 
   - id: k8sApply
@@ -15,28 +15,22 @@ steps:
       - "CLOUDSDK_COMPUTE_ZONE=us-central1-b"
       - "CLOUDSDK_CONTAINER_CLUSTER=ikomida-prod-cluster"
     waitFor:
-      - dockerBuild
+      - kanikoBuild
 
-  - id: k8sSetImage
-    name: "gcr.io/cloud-builders/kubectl"
-    args:
-      [
-        "-n",
-        "ikomida",
-        "set",
-        "image",
-        "pod",
-        "ikomida-rabbitmq",
-        "ikomida-rabbitmq=us-central1-docker.pkg.dev/ikomida-prod/docker/rabbitmq-image:$TAG_NAME",
-      ]
-    env:
-      - "CLOUDSDK_COMPUTE_ZONE=us-central1-b"
-      - "CLOUDSDK_CONTAINER_CLUSTER=ikomida-prod-cluster"
-    waitFor:
-      - k8sApply
-
-images:
-  [
-    "us-central1-docker.pkg.dev/ikomida-prod/docker/rabbitmq-image:$TAG_NAME",
-    "us-central1-docker.pkg.dev/ikomida-prod/docker/rabbitmq-image:latest",
-  ]
+  # - id: k8sSetImage
+  #   name: "gcr.io/cloud-builders/kubectl"
+  #   args:
+  #     [
+  #       "-n",
+  #       "ikomida",
+  #       "set",
+  #       "image",
+  #       "pod",
+  #       "ikomida-rabbitmq",
+  #       "ikomida-rabbitmq=us-central1-docker.pkg.dev/ikomida-prod/docker/rabbitmq-image:$TAG_NAME",
+  #     ]
+  #   env:
+  #     - "CLOUDSDK_COMPUTE_ZONE=us-central1-b"
+  #     - "CLOUDSDK_CONTAINER_CLUSTER=ikomida-prod-cluster"
+  #   waitFor:
+  #     - k8sApply
