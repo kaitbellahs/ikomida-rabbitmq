@@ -20,25 +20,30 @@ spec:
           name: rabbitmq
           securityContext:
             allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - all
+            privileged: false
+            readOnlyRootFilesystem: true
           env:
             - name: RABBITMQ_DEFAULT_VHOST
               valueFrom:
                 secretKeyRef:
-                    name: environment
-                    key: MQVHOST
-                    optional: false
+                  name: environment
+                  key: MQVHOST
+                  optional: false
             - name: RABBITMQ_DEFAULT_USER
               valueFrom:
                 secretKeyRef:
-                    name: environment
-                    key: MQUSER
-                    optional: false
+                  name: environment
+                  key: MQUSER
+                  optional: false
             - name: RABBITMQ_DEFAULT_PASS
               valueFrom:
                 secretKeyRef:
-                    name: environment
-                    key: MQPASS
-                    optional: false
+                  name: environment
+                  key: MQPASS
+                  optional: false
           ports:
             - containerPort: 15672
               name: management
