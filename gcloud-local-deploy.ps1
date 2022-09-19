@@ -15,5 +15,12 @@ docker build -t us-central1-docker.pkg.dev/ikomida-prod/docker/rabbitmq-image:la
 ThrowOnNativeFailure
 docker push us-central1-docker.pkg.dev/ikomida-prod/docker/rabbitmq-image:latest
 kubectl -n ikomida delete StatefulSet rabbitmq-microservice
-kubectl apply -f ./k8s/deployment.yaml
-kubectl apply -f ./k8s/service.yaml
+$prod = $false
+if($args.count -gt 1){
+    $prod=$args[1]==="prod"
+}
+if($prod){
+kubectl apply -f k8s
+}else{
+kubectl apply -f k8s-dev
+}
