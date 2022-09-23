@@ -16,27 +16,27 @@ spec:
         app: rabbitmq-microservice
     spec:
       containers:
-        - image: hub.docker.internal:5000/ikomida/rabbitmq-image:latest
+        - image: us-central1-docker.pkg.dev/ikomida-dev/docker/rabbitmq-image:latest
           name: rabbitmq
           env:
             - name: RABBITMQ_DEFAULT_VHOST
               valueFrom:
                 secretKeyRef:
-                    name: environment
-                    key: MQVHOST
-                    optional: false
+                  name: environment
+                  key: MQVHOST
+                  optional: false
             - name: RABBITMQ_DEFAULT_USER
               valueFrom:
                 secretKeyRef:
-                    name: environment
-                    key: MQUSER
-                    optional: false
+                  name: environment
+                  key: MQUSER
+                  optional: false
             - name: RABBITMQ_DEFAULT_PASS
               valueFrom:
                 secretKeyRef:
-                    name: environment
-                    key: MQPASS
-                    optional: false
+                  name: environment
+                  key: MQPASS
+                  optional: false
           ports:
             - containerPort: 15672
               name: management

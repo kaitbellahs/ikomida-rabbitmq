@@ -16,15 +16,11 @@ spec:
         app: rabbitmq-microservice
     spec:
       containers:
-        - image: us-central1-docker.pkg.dev/ikomida-prod/docker/rabbitmq-image:latest
+        - image: us-central1-docker.pkg.dev/ikomida-dev/docker/rabbitmq-image:latest
           name: rabbitmq
           securityContext:
             allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - all
             privileged: false
-            readOnlyRootFilesystem: true
           env:
             - name: RABBITMQ_DEFAULT_VHOST
               valueFrom:

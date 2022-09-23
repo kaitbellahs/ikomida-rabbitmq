@@ -11,9 +11,9 @@ $nocache=""
 if($args.count -gt 0){
     $nocache=$args[0]
 }
-docker build -t us-central1-docker.pkg.dev/ikomida-prod/docker/rabbitmq-image:latest . $nocache
+docker build -t us-central1-docker.pkg.dev/ikomida-dev/docker/rabbitmq-image:latest . $nocache
 ThrowOnNativeFailure
-docker push us-central1-docker.pkg.dev/ikomida-prod/docker/rabbitmq-image:latest
+docker push us-central1-docker.pkg.dev/ikomida-dev/docker/rabbitmq-image:latest
 kubectl -n ikomida delete StatefulSet rabbitmq-microservice
 $prod = $false
 if($args.count -gt 1){
