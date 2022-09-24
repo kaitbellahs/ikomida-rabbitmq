@@ -16,11 +16,18 @@ spec:
         app: rabbitmq-microservice
     spec:
       containers:
-        - image: us-central1-docker.pkg.dev/ikomida-dev/docker/rabbitmq-image:latest
+        - image: us-central1-docker.pkg.dev/$PROJECT_ID/docker/rabbitmq-image:latest
           name: rabbitmq
           securityContext:
             allowPrivilegeEscalation: false
             privileged: false
+          resources:
+            requests:
+              cpu: "18m"
+              memory: "130Mi"
+            limits:
+              cpu: "150m"
+              memory: "200Mi"
           env:
             - name: RABBITMQ_DEFAULT_VHOST
               valueFrom:

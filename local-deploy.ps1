@@ -7,9 +7,13 @@ function ThrowOnNativeFailure {
         throw 'Native Failure'
     }
 }
-$nocache=""
+$projectid="ikomida-dev"
 if($args.count -gt 0){
-    $nocache=$args[0]
+    $projectid=$args[0]
+}
+$nocache=""
+if($args.count -gt 1){
+    $nocache=$args[1]
 }
 docker build -t hub.docker.internal:5000/ikomida/rabbitmq-image:latest . $nocache
 ThrowOnNativeFailure

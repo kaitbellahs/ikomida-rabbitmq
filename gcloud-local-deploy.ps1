@@ -7,20 +7,21 @@ function ThrowOnNativeFailure {
         throw 'Native Failure'
     }
 }
-$nocache=""
+$projectid="ikomida-dev"
 if($args.count -gt 0){
-    $nocache=$args[0]
+    $projectid=$args[0]
 }
-docker build -t us-central1-docker.pkg.dev/ikomida-dev/docker/rabbitmq-image:latest . $nocache
-ThrowOnNativeFailure
-docker push us-central1-docker.pkg.dev/ikomida-dev/docker/rabbitmq-image:latest
-kubectl -n ikomida delete StatefulSet rabbitmq-microservice
-$prod = $false
+$nocache=""
 if($args.count -gt 1){
-    $prod=$args[1] -eq "prod"
+    $nocache=$args[1]
 }
-if($prod){
-kubectl apply -f k8s
-}else{
-kubectl apply -f k8s-dev
+docker build -t us-central1-docker.pkg.dev/$projectid/docker/rabbitmq-image:latest . $nocache
+ThrowOnNativeFailure
+docker push us-central1-docker.pkg.dev/$projectid/docker/rabbitmq-image:latest
+kubectl -n ikomida delete StatefulSet rabbitmq-microservice
+
+Get-ChildItem ".\k8s\" -Filter *.yaml | 
+Foreach-Object {
+    $content = Get-Content $_.FullName
+    $content.replace('$PROJECT_ID', $projectid) | kubectl apply -f -
 }
