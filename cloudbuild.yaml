@@ -13,7 +13,7 @@ steps:
     args: ["apply", "-f", "k8s/"]
     env:
       - "PROJECT_ID=$PROJECT_ID"
-      - "CLOUDSDK_COMPUTE_ZONE=us-central1"
+      - "CLOUDSDK_COMPUTE_ZONE=us-central1-b"
       - "CLOUDSDK_CONTAINER_CLUSTER=ikomida-prod-cluster"
     waitFor:
       - kanikoBuild
